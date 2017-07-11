@@ -1,13 +1,5 @@
-# DynamicTable
-DynamicTable create model table default by Date.today
-
-Suppose:
-- Rails  model is Log
-- Date.today = "Tue, 11 Jul 2017"
-
-Log.create_table  will create table "logs_170711"
-
-Log.create_table(Date.today - 1.days) will create table "logs_170710"
+# DynamicTable                                                                                                
+Use DynamicTable class method **create_table** to create table dynamically with dynamic class name，and use class method **get_dynamic_class** to get class name to perform model operations
 
 ## Installation
 
@@ -21,20 +13,56 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Or install it yourself as: 
 
     $ gem install dynamic_table
 
 ## Usage
 
-TODO: Write usage instructions here
+Any class include DynamicTable module  will extend DynamicTable's class method:
+- create_table 
+- get_dynamic_class
+- rename_table
+- drop_table
 
-## Development
+Suppose:
+- class name is SendLog
+- Date.today is "Tue, 11 Jul 2017"
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### create_table
+```
+SendLog.create_table
+```
+Will create class SendLog170711 with table_name send_logs_170711
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
+SendLog.create_table(Date.today-1.days)
+```
+Will create class SendLog170710 with table_name send_logs_170710
+
+### get_dynamic_class
+Use get_dynamic_class to get class name,and then perform model operations
+```
+SendLog.get_dynamic_class
+```
+If SendLog170711 exist ,it will return SendLog170711
+else return Center170711(Table doesn't exist)
+
+```
+SendLog.get_dynamic_class(Date.today-1.days).where("id=?",1)
+```
+Will generate the following SQL
+
+```
+SELECT `send_logs_170711`.* FROM `send_logs_170711` WHERE (id=1)
+```
+
+### rename_table
+SendLog.rename_table old_table_name,new_table_name
+
+### drop_table
+SendLog.drop_table
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dynamic_table.
+Bug reports and pull requests are welcome on GitHub at https://github.com/luolinae86/dynamic_table.
