@@ -1,7 +1,6 @@
 require "dynamic_table/version"
 
 module DynamicTable
-  # Your code goes here...
   extend ActiveSupport::Concern
 
   def self.included(base)
