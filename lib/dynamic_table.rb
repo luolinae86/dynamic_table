@@ -8,17 +8,18 @@ module DynamicTable
   end
 
   module ClassMethods
-    def get_dynamic_class(date = Date.today)
-      class_name = set_class_name(date)
-      class_name.constantize
-    rescue NameError
-      define_dynamic_class(date)
-    end
 
     def create_table date=Date.today
       new_table_name = set_table_name date
       conn = ActiveRecord::Base.connection
       conn.execute "create table `#{new_table_name}` like  #{self.table_name}" unless conn.table_exists? new_table_name
+    end
+
+    def get_dynamic_class(date = Date.today)
+      class_name = set_class_name(date)
+      class_name.constantize
+    rescue NameError
+      define_dynamic_class(date)
     end
 
     def rename_table old_table_name,new_table_name
