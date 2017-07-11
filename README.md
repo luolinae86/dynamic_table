@@ -1,8 +1,13 @@
 # DynamicTable
+DynamicTable create model table default by Date.today
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dynamic_table`. To experiment with that code, run `bin/console` for an interactive prompt.
+Suppose:
+- Rails  model is Log
+- Date.today = "Tue, 11 Jul 2017"
 
-TODO: Delete this and the text above, and describe your gem
+Log.create_table  will create table "logs_170711"
+
+Log.create_table(Date.today - 1.days) will create table "logs_170710"
 
 ## Installation
 
